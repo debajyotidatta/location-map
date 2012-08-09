@@ -1,0 +1,27 @@
+application: datta3442
+version: 1
+runtime: python27
+api_version: 1
+threadsafe: yes
+
+handlers:
+- url: /favicon\.ico
+  static_files: favicon.ico
+  upload: favicon\.ico
+
+- url: /css
+  static_dir: assets/css
+  
+- url: /js
+  static_dir: assets/js
+
+- url: .*
+  script: main.app
+
+libraries:
+
+- name: jinja2
+  version: latest
+
+- name: webapp2
+  version: "2.5.1"
