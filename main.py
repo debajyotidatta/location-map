@@ -18,6 +18,7 @@
 import os
 import webapp2
 import jinja2
+import urllib2
 
 from google.appengine.ext import db
 
@@ -25,6 +26,8 @@ from google.appengine.ext import db
 template_dir = os.path.join(os.path.dirname(__file__), 'templates')
 jinja_env= jinja2.Environment(loader = jinja2.FileSystemLoader(template_dir), autoescape = True)
 
+
+#art_key = db.Key.from_path('ASCIIChan', 'arts')
 
 class Handler(webapp2.RequestHandler):
     def write(self, *a, **kw):
@@ -38,19 +41,32 @@ class Handler(webapp2.RequestHandler):
         self.write(self.render_str(template, **kw))
 
 
+"""IP_URL = "http://api.hostip.info/?ip="
+def get_coords(ip):
+    url = IP_URL + ip
+    content = None
+    try:
+        content = urllib2.urlopen(url).read()
+    except URLError:
+        return"""
+
+
+
 class Art(db.Model):
     latt = db.TextProperty(required = True)
     longi = db.TextProperty(required = True)
     created = db.DateTimeProperty(auto_now_add = True)
 
-
+ 
 
 class MainPage(Handler):
 
     def render_front(self, latt="", longi="", error=""):
         
         arts = db.GqlQuery("SELECT * FROM Art "
-                                "ORDER BY created DESC")
+                            
+                                "ORDER BY created DESC"
+                                )
         self.render("index.html", latt=latt, longi=longi, error=error, arts=arts)
 
     def get(self):
